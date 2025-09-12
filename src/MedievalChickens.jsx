@@ -1,6 +1,10 @@
+import { useState } from "react";
+import ReactPlayer from "react-player";
 import { motion } from "framer-motion";
 
 export default function MedievalChickens() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Hero Section */}
@@ -30,6 +34,23 @@ export default function MedievalChickens() {
             Meet Suncrest, Moonfeather, Fluff-Ball, Fluffy, and Brambleshine in their floating market world.
           </motion.p>
         </div>
+      </div>
+
+      {/* Soundtrack Player */}
+      <div className="text-center my-6">
+        <button
+          onClick={() => setIsPlaying(!isPlaying)}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+        >
+          {isPlaying ? "Pause Soundtrack" : "Play Soundtrack"}
+        </button>
+        <ReactPlayer
+          url="https://youtu.be/UXlo7Z8Cqh8?si=S24hkli_REPkKcOr"
+          playing={isPlaying}
+          controls={false}
+          width="0"
+          height="0"
+        />
       </div>
 
       {/* Story Section */}
