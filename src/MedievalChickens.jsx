@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ReactPlayer from "react-player";
 import { motion } from "framer-motion";
+import { Play, Pause } from "lucide-react"; // Icons for the button
 
 export default function MedievalChickens() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -32,26 +33,25 @@ export default function MedievalChickens() {
           >
             Meet Suncrest, Moonfeather, Fluff-Ball, Fluffy, and Brambleshine in their floating market world.
           </motion.p>
-        </div>
-      </div>
 
-      {/* Audio-only Soundtrack */}
-      <div className="text-center my-6">
-        <button
-          onClick={() => setIsPlaying(!isPlaying)}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-        >
-          {isPlaying ? "Pause Soundtrack" : "Play Soundtrack"}
-        </button>
-        {/* Hidden YouTube player */}
-        <ReactPlayer
-          url="https://www.youtube.com/watch?v=AD6TyKedfU8"
-          playing={isPlaying}
-          controls={false}
-          width="0"
-          height="0"
-          style={{ display: "none" }}
-        />
+          {/* Pretty Play/Pause Button */}
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="flex items-center gap-2 px-5 py-2 mt-4 bg-green-600 rounded-full shadow-md hover:bg-green-700 transition-colors"
+          >
+            {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+            {isPlaying ? "Pause Soundtrack" : "Play Soundtrack"}
+          </button>
+
+          {/* Hidden YouTube Player */}
+          <ReactPlayer
+            url="https://www.youtube.com/watch?v=UXlo7Z8Cqh8"
+            playing={isPlaying}
+            width="0"
+            height="0"
+            style={{ display: "none" }}
+          />
+        </div>
       </div>
 
       {/* Story Section */}
@@ -85,7 +85,7 @@ export default function MedievalChickens() {
         </div>
       </div>
 
-      {/* Fluff-Ball */}
+      {/* Fluff-Ball Section */}
       <div className="py-20 bg-gray-800 px-6 text-center">
         <h2 className="text-4xl font-bold mb-10">Fluff-Ball</h2>
         <img src="/FluffBall.png" alt="Fluff-Ball" className="rounded-2xl shadow-lg mx-auto mb-4 w-full max-w-md object-cover" />
@@ -94,7 +94,7 @@ export default function MedievalChickens() {
         </p>
       </div>
 
-      {/* Fluffy */}
+      {/* Fluffy Section */}
       <div className="py-20 bg-gray-900 px-6 text-center">
         <h2 className="text-4xl font-bold mb-10">Fluffy</h2>
         <img src="/Fluffy.png" alt="Fluffy" className="rounded-2xl shadow-lg mx-auto mb-4 w-full max-w-md object-cover" />
