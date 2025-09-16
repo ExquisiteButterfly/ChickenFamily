@@ -45,7 +45,7 @@ export default function MedievalChickens() {
         </button>
         {/* Hidden YouTube player */}
         <ReactPlayer
-          url="https://www.youtube.com/watch?v=UXlo7Z8Cqh8"
+          url="https://www.youtube.com/watch?v=AD6TyKedfU8"
           playing={isPlaying}
           controls={false}
           width="0"
@@ -109,4 +109,3 @@ export default function MedievalChickens() {
     </div>
   );
 }
-
