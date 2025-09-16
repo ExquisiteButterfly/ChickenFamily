@@ -15,6 +15,7 @@ export default function MedievalChickens() {
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/50" />
+
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
           <motion.h1
             initial={{ opacity: 0, y: -50 }}
@@ -35,7 +36,7 @@ export default function MedievalChickens() {
         </div>
       </div>
 
-      {/* Audio-only Soundtrack */}
+      {/* Soundtrack Player */}
       <div className="text-center my-6">
         <button
           onClick={() => setIsPlaying(!isPlaying)}
@@ -43,14 +44,12 @@ export default function MedievalChickens() {
         >
           {isPlaying ? "Pause Soundtrack" : "Play Soundtrack"}
         </button>
-        {/* Hidden YouTube player */}
         <ReactPlayer
-          url="https://www.youtube.com/watch?v=UXlo7Z8Cqh8"
+          url="https://youtu.be/UXlo7Z8Cqh8?si=S24hkli_REPkKcOr"
           playing={isPlaying}
           controls={false}
           width="0"
           height="0"
-          style={{ display: "none" }}
         />
       </div>
 
@@ -65,27 +64,39 @@ export default function MedievalChickens() {
         </p>
       </div>
 
-      {/* Meet the Family */}
+      {/* Meet the Family Section */}
       <div className="py-20 bg-gray-900 px-6">
         <h2 className="text-4xl font-bold text-center mb-10">Meet the Family</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
-          {[
-            { name: "Suncrest", img: "/Suncrest.png", desc: "Golden rooster in armor or cloak, the proud leader and most eye-catching figure." },
-            { name: "Moonfeather", img: "/Moonfeather.png", desc: "Silver hen, calm and smaller, standing near Suncrest, guiding the market’s harmony." },
-            { name: "Fluff-Ball", img: "/FluffBall.png", desc: "A small, round chick—bolder and mid-movement, curious about everything." },
-            { name: "Fluffy", img: "/Fluffy.png", desc: "Darker brown chick with a little crest, dreamy and observant of the world." },
-            { name: "Brambleshine", img: "/Brambleshine.png", desc: "Colorful rooster with a dramatic crest, telling stories to the market crowd." },
-          ].map((c) => (
-            <div key={c.name} className="text-center">
-              <img src={c.img} alt={c.name} className="rounded-2xl shadow-lg mb-4 w-full h-72 object-cover" />
-              <h3 className="text-2xl font-bold">{c.name}</h3>
-              <p className="text-gray-300 mt-2">{c.desc}</p>
-            </div>
-          ))}
+          <div className="text-center">
+            <img src="/Suncrest.png" alt="Suncrest" className="rounded-2xl shadow-lg mb-4 w-full h-72 object-cover" />
+            <h3 className="text-2xl font-bold">Suncrest</h3>
+            <p className="text-gray-300 mt-2">Golden rooster in armor or cloak, the proud leader and most eye-catching figure.</p>
+          </div>
+          <div className="text-center">
+            <img src="/Moonfeather.png" alt="Moonfeather" className="rounded-2xl shadow-lg mb-4 w-full h-72 object-cover" />
+            <h3 className="text-2xl font-bold">Moonfeather</h3>
+            <p className="text-gray-300 mt-2">Silver hen, calm and smaller, standing near Suncrest, guiding the market’s harmony.</p>
+          </div>
+          <div className="text-center">
+            <img src="/FluffBall.png" alt="Fluff-Ball" className="rounded-2xl shadow-lg mb-4 w-full h-72 object-cover" />
+            <h3 className="text-2xl font-bold">Fluff-Ball</h3>
+            <p className="text-gray-300 mt-2">A small, round chick—bolder and mid-movement, curious about everything.</p>
+          </div>
+          <div className="text-center">
+            <img src="/Fluffy.png" alt="Fluffy" className="rounded-2xl shadow-lg mb-4 w-full h-72 object-cover" />
+            <h3 className="text-2xl font-bold">Fluffy</h3>
+            <p className="text-gray-300 mt-2">Darker brown chick with a little crest, dreamy and observant of the world.</p>
+          </div>
+          <div className="text-center">
+            <img src="/Brambleshine.png" alt="Brambleshine" className="rounded-2xl shadow-lg mb-4 w-full h-72 object-cover" />
+            <h3 className="text-2xl font-bold">Brambleshine</h3>
+            <p className="text-gray-300 mt-2">Colorful rooster with a dramatic crest, telling stories to the market crowd.</p>
+          </div>
         </div>
       </div>
 
-      {/* Fluff-Ball */}
+      {/* Individual Sections for Fluff-Ball and Fluffy */}
       <div className="py-20 bg-gray-800 px-6 text-center">
         <h2 className="text-4xl font-bold mb-10">Fluff-Ball</h2>
         <img src="/FluffBall.png" alt="Fluff-Ball" className="rounded-2xl shadow-lg mx-auto mb-4 w-full max-w-md object-cover" />
@@ -94,7 +105,6 @@ export default function MedievalChickens() {
         </p>
       </div>
 
-      {/* Fluffy */}
       <div className="py-20 bg-gray-900 px-6 text-center">
         <h2 className="text-4xl font-bold mb-10">Fluffy</h2>
         <img src="/Fluffy.png" alt="Fluffy" className="rounded-2xl shadow-lg mx-auto mb-4 w-full max-w-md object-cover" />
@@ -103,10 +113,10 @@ export default function MedievalChickens() {
         </p>
       </div>
 
+      {/* Footer */}
       <footer className="bg-gray-800 py-10 text-center text-gray-400">
         <p>© 2025 The Reed-Dock Chicken Family. All Rights Reserved.</p>
       </footer>
     </div>
   );
 }
-
