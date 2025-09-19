@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-do
 import MedievalChickens from "./MedievalChickens.jsx";
 import Hero from "./pages/Hero.jsx";
 import Family from "./pages/Family.jsx";
+import ChickenEmulator from "./pages/ChickenEmulator.jsx";
 import "./index.css";
 
 const tabClass =
@@ -48,6 +49,9 @@ function Navbar() {
         <NavLink to="/family" className={({ isActive }) => `${tabClass} ${isActive ? activeClass : ""}`}>
           FAMILY
         </NavLink>
+        <NavLink to="/emulator" className={({ isActive }) => `${tabClass} ${isActive ? activeClass : ""}`}>
+          CHICKEN&nbsp;EMULATOR
+        </NavLink>
       </div>
     </nav>
   );
@@ -60,6 +64,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="/" element={<MedievalChickens />} />
       <Route path="/hero" element={<Hero />} />
       <Route path="/family" element={<Family />} />
+      <Route path="/emulator" element={<ChickenEmulator />} />
     </Routes>
   </Router>
 );
