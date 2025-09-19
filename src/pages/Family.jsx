@@ -1,46 +1,79 @@
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectCoverflow, Autoplay, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+
+const members = [
+  {
+    name: "Suncrest",
+    img: "/Suncrest.png",
+    desc: "Suncrest is the golden rooster in armor, the proud leader of the Reed-Dock Chicken Family. His courage and commanding presence inspire every trader at the floating markets.",
+  },
+  {
+    name: "Moonfeather",
+    img: "/Moonfeather.png",
+    desc: "Moonfeather, the calm silver hen, is the guiding heart of the family. She tends to the market goods, ensuring harmony among the bustling docks and fellow traders.",
+  },
+  {
+    name: "Fluff-Ball",
+    img: "/FluffBall.png",
+    desc: "Fluff-Ball is the bold, adventurous chick. Always mid-movement, Fluff-Ball turns every crate, basket, and reed raft into a new adventure on the shimmering water.",
+  },
+  {
+    name: "Fluffy",
+    img: "/Fluffy.png",
+    desc: "Fluffy is the dreamy brown chick with a tiny crest on its head. Quiet and observant, Fluffy watches the markets and sketches the boats, bringing balance to Fluff-Ball’s boundless energy.",
+  },
+  {
+    name: "Brambleshine",
+    img: "/Brambleshine.png",
+    desc: "Brambleshine, the colorful rooster with a dramatic crest, is the storyteller of the docks. His tales weave courage, laughter, and wisdom, captivating all who gather at the markets.",
+  },
+];
+
 export default function Family() {
-  const chickens = [
-    { name: "Suncrest", img: "/Suncrest.png", desc: "Golden rooster in armor or cloak — the proud leader and most eye-catching figure." },
-    { name: "Moonfeather", img: "/Moonfeather.png", desc: "Silver hen, calm and smaller, standing near Suncrest and guiding the market’s harmony." },
-    { name: "Fluff-Ball", img: "/FluffBall.png", desc: "A small, round chick — bolder and mid-movement, curious about everything." },
-    { name: "Fluffy", img: "/Fluffy.png", desc: "Darker brown chick with a little crest — dreamy and observant of the world." },
-    { name: "Brambleshine", img: "/Brambleshine.png", desc: "Colorful rooster with a dramatic crest — a born storyteller holding crowds in awe." }
-  ];
-
   return (
-    <div className="bg-gray-900 text-white min-h-screen">
-      <div className="py-20 px-6">
-        <h2 className="text-4xl font-bold text-center mb-10">Meet the Family</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
-          {chickens.map(c => (
-            <div key={c.name} className="text-center">
-              <img src={c.img} alt={c.name} className="rounded-2xl shadow-lg mb-4 w-full h-72 object-cover" />
-              <h3 className="text-2xl font-bold">{c.name}</h3>
-              <p className="text-gray-300 mt-2">{c.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="py-20 bg-gray-800 px-6 text-center">
-        <h2 className="text-4xl font-bold mb-10">Fluff-Ball</h2>
-        <img src="/FluffBall.png" alt="Fluff-Ball" className="rounded-2xl shadow-lg mx-auto mb-4 w-full max-w-md object-cover" />
-        <p className="max-w-3xl mx-auto text-lg text-gray-300 leading-relaxed">
-          Fluff-Ball is the adventurous little chick of the family — bold, curious, and always mid-movement.
-          Whether chasing river gems or sneaking peeks into cargo baskets, Fluff-Ball brings energy and mischief
-          to the Reed Docks.
-        </p>
-      </div>
-
-      <div className="py-20 bg-gray-900 px-6 text-center">
-        <h2 className="text-4xl font-bold mb-10">Fluffy</h2>
-        <img src="/Fluffy.png" alt="Fluffy" className="rounded-2xl shadow-lg mx-auto mb-4 w-full max-w-md object-cover" />
-        <p className="max-w-3xl mx-auto text-lg text-gray-300 leading-relaxed">
-          Fluffy is the dreamer — darker brown in color with a small crest on the head. Often found sketching reed boats
-          or watching the shimmering water, Fluffy offers a gentle, observant presence that balances Fluff-Ball’s
-          boldness.
-        </p>
-      </div>
+    <div className="py-20 bg-gray-900 px-6 text-center text-white">
+      <h2 className="text-4xl font-bold mb-10">Meet the Family</h2>
+      <Swiper
+        effect={"coverflow"}
+        grabCursor={true}
+        centeredSlides={true}
+        slidesPerView={"auto"}
+        coverflowEffect={{
+          rotate: 50,
+          stretch: 0,
+          depth: 200,
+          modifier: 1,
+          slideShadows: true,
+        }}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
+        loop={true} // Ensures infinite rotation
+        pagination={{ clickable: true }}
+        modules={[EffectCoverflow, Autoplay, Pagination]}
+        className="max-w-3xl mx-auto"
+      >
+        {members.map((m) => (
+          <SwiperSlide
+            key={m.name}
+            className="bg-gray-800 rounded-2xl shadow-lg text-center p-6 max-w-xs"
+          >
+            <img
+              src={m.img}
+              alt={m.name}
+              className="rounded-2xl shadow-lg mb-4 w-64 h-64 object-cover mx-auto"
+            />
+            <h3 className="text-2xl font-bold">{m.name}</h3>
+            <p className="text-gray-300 mt-2 text-base leading-relaxed">
+              {m.desc}
+            </p>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 }
