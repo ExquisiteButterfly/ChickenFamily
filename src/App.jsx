@@ -48,7 +48,7 @@ export default function App() {
             {/* Kanban Tab that opens external link */}
             <li>
               <a
-                href="https://claude.ai/public/artifacts/6cf18fc2-d4b1-4fe8-9a4a-fa6315c8a665"
+                href="https://docs.google.com/spreadsheets/d/1LQifEwH0oG13cJHlnnGzQM8-9SckD9c0aU4kF56R5CI/edit?usp=sharing"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-yellow-400 text-white font-bold"
