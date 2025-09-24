@@ -26,9 +26,8 @@ export default function App() {
   return (
     <Router>
       <div className="bg-gray-900 text-white min-h-screen flex flex-col">
-        {/* Navigation Bar */}
         <nav className="bg-gray-800 py-4 shadow-md flex justify-between items-center px-6">
-          {/* Play Music Button (LEFT) */}
+          {/* Play Music Button */}
           <div>
             <button
               onClick={toggleMusic}
@@ -39,17 +38,27 @@ export default function App() {
             <audio ref={audioRef} src="/happy-day.mp3" loop />
           </div>
 
-          {/* Tabs (RIGHT) */}
+          {/* Navigation Tabs */}
           <ul className="flex space-x-8 text-lg font-bold">
             <li><NavLink to="/" className={navLinkClasses}>HOME</NavLink></li>
             <li><NavLink to="/hero" className={navLinkClasses}>HERO</NavLink></li>
             <li><NavLink to="/family" className={navLinkClasses}>FAMILY</NavLink></li>
             <li><NavLink to="/emulator" className={navLinkClasses}>CHICKEN EMULATOR</NavLink></li>
             <li><NavLink to="/tutorial" className={navLinkClasses}>TUTORIAL</NavLink></li>
+            {/* Kanban Tab that opens external link */}
+            <li>
+              <a
+                href="https://claude.ai/public/artifacts/6cf18fc2-d4b1-4fe8-9a4a-fa6315c8a665"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-yellow-400 text-white font-bold"
+              >
+                KANBAN
+              </a>
+            </li>
           </ul>
         </nav>
 
-        {/* Main Content */}
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<MedievalChickens />} />
@@ -60,7 +69,6 @@ export default function App() {
           </Routes>
         </div>
 
-        {/* Footer */}
         <footer className="bg-gray-800 py-6 text-center text-gray-400">
           <p>© 2025 The Reed-Dock Chicken Family. All Rights Reserved.</p>
         </footer>
