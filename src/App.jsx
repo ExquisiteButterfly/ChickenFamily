@@ -4,6 +4,7 @@ import Hero from "./pages/Hero.jsx";
 import Family from "./pages/Family.jsx";
 import Emulator from "./pages/Emulator.jsx";
 import Tutorial from "./pages/Tutorial.jsx";
+import Game from "./pages/Game.jsx"; // ✅ NEW
 import { useRef } from "react";
 
 export default function App() {
@@ -45,7 +46,7 @@ export default function App() {
             <li><NavLink to="/family" className={navLinkClasses}>FAMILY</NavLink></li>
             <li><NavLink to="/emulator" className={navLinkClasses}>CHICKEN EMULATOR</NavLink></li>
             <li><NavLink to="/tutorial" className={navLinkClasses}>TUTORIAL</NavLink></li>
-            {/* Kanban Tab that opens external link */}
+            <li><NavLink to="/game" className={navLinkClasses}>GAME</NavLink></li> {/* ✅ NEW */}
             <li>
               <a
                 href="https://docs.google.com/spreadsheets/d/1LQifEwH0oG13cJHlnnGzQM8-9SckD9c0aU4kF56R5CI/edit?usp=sharing"
@@ -66,6 +67,7 @@ export default function App() {
             <Route path="/family" element={<Family />} />
             <Route path="/emulator" element={<Emulator />} />
             <Route path="/tutorial" element={<Tutorial />} />
+            <Route path="/game" element={<Game />} /> {/* ✅ NEW */}
           </Routes>
         </div>
 
