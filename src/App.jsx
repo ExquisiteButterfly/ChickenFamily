@@ -5,6 +5,7 @@ import Family from "./pages/Family.jsx";
 import Emulator from "./pages/Emulator.jsx";
 import Tutorial from "./pages/Tutorial.jsx";
 import { useRef } from "react";
+import Game from "./pages/Game.jsx";   // ✅ NEW
 
 export default function App() {
   const audioRef = useRef(null);
@@ -33,45 +34,46 @@ export default function App() {
               onClick={toggleMusic}
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded-lg shadow-md transition"
             >
-              ▶ Play Music
+              🎵 Play Music
             </button>
-            <audio ref={audioRef} src="/happy-day.mp3" loop />
+            <audio ref={audioRef} loop>
+              <source src="/happy-day.mp3" type="audio/mpeg" />
+            </audio>
           </div>
 
-          {/* Navigation Tabs */}
-          <ul className="flex space-x-8 text-lg font-bold">
-            <li><NavLink to="/" className={navLinkClasses}>HOME</NavLink></li>
-            <li><NavLink to="/hero" className={navLinkClasses}>HERO</NavLink></li>
-            <li><NavLink to="/family" className={navLinkClasses}>FAMILY</NavLink></li>
-            <li><NavLink to="/emulator" className={navLinkClasses}>CHICKEN EMULATOR</NavLink></li>
-            <li><NavLink to="/tutorial" className={navLinkClasses}>TUTORIAL</NavLink></li>
-            {/* Kanban Tab that opens external link */}
-            <li>
-              <a
-                href="https://docs.google.com/spreadsheets/d/1LQifEwH0oG13cJHlnnGzQM8-9SckD9c0aU4kF56R5CI/edit?usp=sharing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-yellow-400 text-white font-bold"
-              >
-                KANBAN
-              </a>
-            </li>
-          </ul>
+          {/* Navigation Links */}
+          <div className="flex space-x-6">
+            <NavLink to="/" className={navLinkClasses}>
+              Home
+            </NavLink>
+            <NavLink to="/hero" className={navLinkClasses}>
+              Hero
+            </NavLink>
+            <NavLink to="/family" className={navLinkClasses}>
+              Family
+            </NavLink>
+            <NavLink to="/emulator" className={navLinkClasses}>
+              Emulator
+            </NavLink>
+            <NavLink to="/tutorial" className={navLinkClasses}>
+              Tutorial
+            </NavLink>
+            <NavLink to="/game" className={navLinkClasses}>
+              Game   {/* ✅ NEW TAB */}
+            </NavLink>
+          </div>
         </nav>
 
-        <div className="flex-1">
+        <main className="flex-1 p-6">
           <Routes>
             <Route path="/" element={<MedievalChickens />} />
             <Route path="/hero" element={<Hero />} />
             <Route path="/family" element={<Family />} />
             <Route path="/emulator" element={<Emulator />} />
             <Route path="/tutorial" element={<Tutorial />} />
+            <Route path="/game" element={<Game />} />  {/* ✅ NEW ROUTE */}
           </Routes>
-        </div>
-
-        <footer className="bg-gray-800 py-6 text-center text-gray-400">
-          <p>© 2025 The Reed-Dock Chicken Family. All Rights Reserved.</p>
-        </footer>
+        </main>
       </div>
     </Router>
   );

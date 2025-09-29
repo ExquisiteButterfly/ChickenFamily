@@ -1,0 +1,43 @@
+import React from "react";
+
+export default function Map({ setCurrentSite, setActiveTab }) {
+  const sites = [
+    { name: "Maya", x: "23%", y: "62%" },
+    { name: "Egypt", x: "50%", y: "58%" },
+    { name: "Greece", x: "52%", y: "50%" },
+    { name: "Mesopotamia", x: "55%", y: "55%" },
+    { name: "China", x: "70%", y: "52%" },
+  ];
+
+  const selectSite = (site) => {
+    setCurrentSite(site);
+    setActiveTab("dig");
+  };
+
+  return (
+    <div className="relative p-4 flex justify-center">
+      {/* Background world map */}
+      <img
+        src="/game-assets/world-map.png"
+        alt="World Map"
+        className="max-w-full rounded-lg shadow-lg"
+      />
+
+      {/* Site markers */}
+      {sites.map((s) => (
+        <button
+          key={s.name}
+          onClick={() => selectSite(s.name)}
+          className="absolute bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-2 py-1 rounded-full text-xs shadow-lg"
+          style={{
+            left: s.x,
+            top: s.y,
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          {s.name}
+        </button>
+      ))}
+    </div>
+  );
+}

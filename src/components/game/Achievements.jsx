@@ -1,0 +1,39 @@
+import React, { useEffect, useState } from "react";
+import useSound from "./useSound";
+import ConfettiBurst from "./ConfettiBurst";
+
+export default function Achievements({ earnedAchievements }) {
+  const playAchievement = useSound("/game-audio/achievement.wav");
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    const prev = parseInt(localStorage.getItem("cf_game_ach_count") || "0", 10);
+    const cur = (earnedAchievements || []).length;
+    if (cur > prev) {
+      playAchievement();
+      localStorage.setItem("cf_game_ach_count", String(cur));
+    }
+    setShowConfetti((earnedAchievements || []).includes("Completionist"));
+  }, [earnedAchievements]);
+
+  if (!earnedAchievements || earnedAchievements.length === 0) {
+    return <p className="text-center">🌟 No achievements unlocked yet.</p>;
+  }
+
+  return (
+    <div className="p-4 space-y-4 relative">
+      {showConfetti && <ConfettiBurst />}
+      <h2 className="text-2xl font-bold text-center">🌟 Achievements</h2>
+      <ul className="space-y-2 text-center">
+        {earnedAchievements.map((ach) => (
+          <li
+            key={ach}
+            className="bg-yellow-100 text-black px-4 py-2 rounded-lg shadow font-bold"
+          >
+            {ach}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
