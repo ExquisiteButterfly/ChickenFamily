@@ -9,6 +9,62 @@
 
 /* --- Custom Global Styles --- */
 
+/* --- Chicken Speech Bubble Variants --- */
+.speech-bubble {
+  position: relative;
+  background: #ffffff;        /* white background */
+  border: 2px solid #facc15;  /* yellow border */
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  box-shadow: 2px 4px 6px rgba(0,0,0,0.15);
+  color: #000;
+  font-weight: 500;
+}
+
+/* Tail pointing LEFT (for ChickenGuide) */
+.speech-bubble.left::after,
+.speech-bubble.left::before {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 20px;
+  border-style: solid;
+}
+
+.speech-bubble.left::after {
+  border-width: 12px 12px 0;
+  border-color: #ffffff transparent transparent transparent;
+}
+
+.speech-bubble.left::before {
+  bottom: -15px;
+  border-width: 14px 14px 0;
+  border-color: #facc15 transparent transparent transparent;
+  left: 18px;
+}
+
+/* Tail pointing RIGHT (for ChickenHelper) */
+.speech-bubble.right::after,
+.speech-bubble.right::before {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  right: 20px;
+  border-style: solid;
+}
+
+.speech-bubble.right::after {
+  border-width: 12px 0 0 12px;
+  border-color: #ffffff transparent transparent transparent;
+}
+
+.speech-bubble.right::before {
+  bottom: -15px;
+  border-width: 14px 0 0 14px;
+  border-color: #facc15 transparent transparent transparent;
+  right: 18px;
+}
+
 /* Body default styling */
 body {
   @apply bg-gray-900 text-white;

@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import artifacts from "./artifacts";
 import useSound from "./useSound";
+import ChickenHelper from "./ChickenHelper";
 
 export default function DigSite({
   currentSite,
@@ -18,6 +19,8 @@ export default function DigSite({
   const [lastAnswer, setLastAnswer] = useState(null);
   const [siteComplete, setSiteComplete] = useState(null);
   const clickCountRef = useRef(0);
+  const streakRef = useRef(parseInt(localStorage.getItem("cf_game_quiz_streak") || "0", 10));
+  const [helper, setHelper] = useState({ character: null, message: null });
 
   // Sounds
   const playDig = useSound("/game-audio/dig.wav");
@@ -37,6 +40,8 @@ export default function DigSite({
       setLastAnswer(null);
       setSiteComplete(null);
       clickCountRef.current = 0;
+      streakRef.current = 0;
+      try { localStorage.setItem("cf_game_quiz_streak", "0"); } catch {}
     };
     window.addEventListener("game-reset", onReset);
     return () => window.removeEventListener("game-reset", onReset);
@@ -63,7 +68,12 @@ export default function DigSite({
         setQuizAnswered(false);
         setLastAnswer(null);
         playDiscovery();
+        setHelper({ character: "FluffBall", message: `Yay! You found ${next.name}!` });
 
+        if (clickCountRef.current === 1 && !earnedAchievements.includes("Lucky Digger")) {
+          setEarnedAchievements([...earnedAchievements, "Lucky Digger"]);
+          playAchievement();
+        }
         if (clickCountRef.current <= 3 && !earnedAchievements.includes("Quick Digger")) {
           setEarnedAchievements([...earnedAchievements, "Quick Digger"]);
           playAchievement();
@@ -80,8 +90,18 @@ export default function DigSite({
 
     if (correct) {
       playCorrect();
+      setHelper({ character: "Fluffy", message: "Great job! Keep digging!" });
+      streakRef.current += 1;
+      try { localStorage.setItem("cf_game_quiz_streak", String(streakRef.current)); } catch {}
+      if (streakRef.current >= 10 && !earnedAchievements.includes("Quiz Master")) {
+        setEarnedAchievements([...earnedAchievements, "Quiz Master"]);
+        playAchievement();
+      }
     } else {
       playWrong();
+      setHelper({ character: "Moonfeather", message: "Don’t give up, you’ll learn from mistakes!" });
+      streakRef.current = 0;
+      try { localStorage.setItem("cf_game_quiz_streak", "0"); } catch {}
       return;
     }
 
@@ -105,6 +125,15 @@ export default function DigSite({
           playBadge();
         }
         setSiteComplete(site);
+        // World Explorer achievement
+        const allSites = Object.keys(artifacts);
+        const neededBadges = new Set(allSites.map((s) => `${s} Explorer`));
+        const have = new Set([...(earnedBadges || []), `${site} Explorer`]);
+        const allHave = Array.from(neededBadges).every((b) => have.has(b));
+        if (allHave && !earnedAchievements.includes("World Explorer")) {
+          setEarnedAchievements([...earnedAchievements, "World Explorer"]);
+          playAchievement();
+        }
       }
 
       const allTotal = Object.values(artifacts).reduce((s, arr) => s + arr.length, 0);
@@ -121,68 +150,64 @@ export default function DigSite({
   }
 
   return (
-    <div className="p-4 space-y-4">
-      <h2 className="text-xl font-bold text-center">{currentSite} Dig Site</h2>
-      <div className="grid grid-cols-5 gap-2 justify-center max-w-sm mx-auto">
-        {grid.map((dug, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleDig(idx)}
-            className={`w-14 h-14 md:w-16 md:h-16 rounded-lg shadow ${
-              dug ? "bg-yellow-200" : "bg-yellow-400 hover:bg-yellow-300"
-            }`}
-            aria-label={`Dig tile ${idx + 1}`}
-          >
-            {dug ? "🟫" : "⛏️"}
-          </button>
-        ))}
-      </div>
+    <>
+      <ChickenHelper character={helper.character} message={helper.message} />
+      <div className="p-4 space-y-4">
+        <h2 className="text-xl font-bold text-center">{currentSite} Dig Site</h2>
+        <div className="grid grid-cols-5 gap-2 justify-center max-w-sm mx-auto">
+          {grid.map((dug, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleDig(idx)}
+              className={`w-14 h-14 md:w-16 md:h-16 rounded-lg shadow ${dug ? "bg-yellow-200" : "bg-yellow-400 hover:bg-yellow-300"}`}
+              aria-label={`Dig tile ${idx + 1}`}
+            >
+              {dug ? "🟫" : "⛏️"}
+            </button>
+          ))}
+        </div>
 
-      {showQuiz && currentArtifact && (
-        <div className="bg-white text-black p-4 rounded-lg shadow-md max-w-xl mx-auto">
-          <h3 className="font-bold">{currentArtifact.name}</h3>
-          <img
-            src={currentArtifact.img}
-            alt={currentArtifact.name}
-            className="w-32 h-32 md:w-40 md:h-40 my-2 object-contain"
-          />
-          {currentArtifact.quiz && (
-            <div className="space-y-2">
-              <p className="font-semibold">{currentArtifact.quiz.question}</p>
-              <div className="flex flex-wrap gap-2">
-                {currentArtifact.quiz.options.map((o) => (
-                  <button
-                    key={o}
-                    onClick={() => onAnswer(o)}
-                    className="px-3 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
-                  >
-                    {o}
-                  </button>
-                ))}
+        {showQuiz && currentArtifact && (
+          <div className="bg-white text-black p-4 rounded-lg shadow-md max-w-xl mx-auto">
+            <h3 className="font-bold">{currentArtifact.name}</h3>
+            <img src={currentArtifact.img} alt={currentArtifact.name} className="w-32 h-32 md:w-40 md:h-40 my-2 object-contain" />
+            {currentArtifact.quiz && (
+              <div className="space-y-2">
+                <p className="font-semibold">{currentArtifact.quiz.question}</p>
+                <div className="flex flex-wrap gap-2">
+                  {currentArtifact.quiz.options.map((o) => (
+                    <button
+                      key={o}
+                      onClick={() => onAnswer(o)}
+                      className="px-3 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                    >
+                      {o}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {quizAnswered && lastAnswer && (
-            <>
-              {lastAnswer === currentArtifact.quiz?.answer ? (
-                <p className="text-green-700 mt-2">
-                  ✅ Nice digging! Check the Museum to see your collection.
-                </p>
-              ) : (
-                <p className="text-red-600 mt-2">❌ Try again!</p>
-              )}
-            </>
-          )}
-        </div>
-      )}
+            {quizAnswered && lastAnswer && (
+              <>
+                {lastAnswer === currentArtifact.quiz?.answer ? (
+                  <p className="text-green-700 mt-2">
+                    ✅ Nice digging! Check the Museum to see your collection.
+                  </p>
+                ) : (
+                  <p className="text-red-600 mt-2">❌ Try again!</p>
+                )}
+              </>
+            )}
+          </div>
+        )}
 
-      {siteComplete && (
-        <div className="bg-green-100 border border-green-500 text-green-700 p-4 rounded-lg shadow text-center">
-          ✅ You finished digging in <b>{siteComplete}</b>!<br />
-          Please pick another city on the <b>Map</b> or check your <b>Museum</b> / <b>Badges</b>.
-        </div>
-      )}
-    </div>
+        {siteComplete && (
+          <div className="bg-green-100 border border-green-500 text-green-700 p-4 rounded-lg shadow text-center">
+            ✅ You finished digging in <b>{siteComplete}</b>!
+          </div>
+        )}
+      </div>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import GameNavbar from "../components/game/GameNavbar";
 import Map from "../components/game/Map";
 import DigSite from "../components/game/DigSite";
@@ -9,6 +9,7 @@ import Timeline from "../components/game/Timeline";
 import Glossary from "../components/game/Glossary";
 import CreativeMode from "../components/game/CreativeMode";
 import MiniGameCarbonDating from "../components/game/MiniGameCarbonDating";
+import ChickenGuide from "../components/game/ChickenGuide";
 
 export default function Game() {
   const [activeTab, setActiveTab] = useState("map");
@@ -18,56 +19,95 @@ export default function Game() {
   const [earnedAchievements, setEarnedAchievements] = useState([]);
   const [customArtifacts, setCustomArtifacts] = useState([]);
 
+  const audioRef = useRef(null);
+  const [musicPlaying, setMusicPlaying] = useState(false);
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (musicPlaying) {
+      audioRef.current.pause();
+      setMusicPlaying(false);
+    } else {
+      const p = audioRef.current.play();
+      if (p !== undefined) {
+        p.catch(err => console.log("Play blocked:", err));
+      }
+      setMusicPlaying(true);
+    }
+  };
+
   return (
-    <div className="p-4 max-w-5xl mx-auto">
-      {/* Top navbar with tabs, reset, how-to, and progress bar */}
-      <GameNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
+    <>
+      {/* Hidden audio element */}
+      <audio
+        ref={audioRef}
+        src="/game-audio/happy-day.wav"
+        loop
+        preload="auto"
+      />
 
-      {/* Map → pick a site */}
-      {activeTab === "map" && (
-        <Map setCurrentSite={setCurrentSite} setActiveTab={setActiveTab} />
-      )}
+      <ChickenGuide activeTab={activeTab} />
 
-      {/* Dig site → uncover artifacts */}
-      {activeTab === "dig" && (
-        <DigSite
-          currentSite={currentSite}
-          revealedArtifacts={revealedArtifacts}
-          setRevealedArtifacts={setRevealedArtifacts}
-          earnedBadges={earnedBadges}
-          setEarnedBadges={setEarnedBadges}
-          earnedAchievements={earnedAchievements}
-          setEarnedAchievements={setEarnedAchievements}
-        />
-      )}
+      <div className="p-4 max-w-5xl mx-auto">
+        {/* Music toggle button */}
+        <div className="flex justify-end mb-2">
+          <button
+            onClick={toggleMusic}
+            className="px-3 py-1 bg-blue-600 text-white rounded-md shadow"
+          >
+            {musicPlaying ? "🔊 Music On" : "🔇 Music Off"}
+          </button>
+        </div>
 
-      {/* Museum view */}
-      {activeTab === "museum" && (
-        <Museum revealedArtifacts={revealedArtifacts} />
-      )}
+        {/* Top navbar with tabs, reset, how-to, and progress bar */}
+        <GameNavbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Badges and achievements */}
-      {activeTab === "badges" && <Badges earnedBadges={earnedBadges} />}
-      {activeTab === "achievements" && (
-        <Achievements earnedAchievements={earnedAchievements} />
-      )}
+        {/* Map → pick a site */}
+        {activeTab === "map" && (
+          <Map setCurrentSite={setCurrentSite} setActiveTab={setActiveTab} />
+        )}
 
-      {/* Timeline + glossary (simple stubs for now) */}
-      {activeTab === "timeline" && <Timeline />}
-      {activeTab === "glossary" && <Glossary />}
+        {/* Dig site → uncover artifacts */}
+        {activeTab === "dig" && (
+          <DigSite
+            currentSite={currentSite}
+            revealedArtifacts={revealedArtifacts}
+            setRevealedArtifacts={setRevealedArtifacts}
+            earnedBadges={earnedBadges}
+            setEarnedBadges={setEarnedBadges}
+            earnedAchievements={earnedAchievements}
+            setEarnedAchievements={setEarnedAchievements}
+          />
+        )}
 
-      {/* Creative mode (add custom artifacts) */}
-      {activeTab === "creative" && (
-        <CreativeMode
-          customArtifacts={customArtifacts}
-          setCustomArtifacts={setCustomArtifacts}
-        />
-      )}
+        {/* Museum view */}
+        {activeTab === "museum" && (
+          <Museum revealedArtifacts={revealedArtifacts} />
+        )}
 
-      {/* Mini game (carbon dating stub) */}
-      {activeTab === "miniGame" && (
-        <MiniGameCarbonDating setActiveTab={setActiveTab} />
-      )}
-    </div>
+        {/* Badges and achievements */}
+        {activeTab === "badges" && <Badges earnedBadges={earnedBadges} />}
+        {activeTab === "achievements" && (
+          <Achievements earnedAchievements={earnedAchievements} />
+        )}
+
+        {/* Timeline + glossary */}
+        {activeTab === "timeline" && <Timeline />}
+        {activeTab === "glossary" && <Glossary />}
+
+        {/* Creative mode */}
+        {activeTab === "creative" && (
+          <CreativeMode
+            customArtifacts={customArtifacts}
+            setCustomArtifacts={setCustomArtifacts}
+          />
+        )}
+
+        {/* Mini game */}
+        {activeTab === "miniGame" && (
+          <MiniGameCarbonDating setActiveTab={setActiveTab} />
+        )}
+      </div>
+    </>
   );
 }
