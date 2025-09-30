@@ -4,8 +4,9 @@ import Hero from "./pages/Hero.jsx";
 import Family from "./pages/Family.jsx";
 import Emulator from "./pages/Emulator.jsx";
 import Tutorial from "./pages/Tutorial.jsx";
+import Game from "./pages/Game.jsx";
+import KanBan from "./pages/KanBan.jsx";   // ✅ NEW
 import { useRef } from "react";
-import Game from "./pages/Game.jsx";   // ✅ NEW
 
 export default function App() {
   const audioRef = useRef(null);
@@ -27,53 +28,45 @@ export default function App() {
   return (
     <Router>
       <div className="bg-gray-900 text-white min-h-screen flex flex-col">
-        <nav className="bg-gray-800 py-4 shadow-md flex justify-between items-center px-6">
+        <nav className="bg-gray-800 py-4 shadow-md flex justify-between items-center px-6 sticky top-0 z-50">
           {/* Play Music Button */}
           <div>
             <button
               onClick={toggleMusic}
               className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded-lg shadow-md transition"
             >
-              🎵 Play Music
+              ▶ Play Music
             </button>
-            <audio ref={audioRef} loop>
-              <source src="/happy-day.mp3" type="audio/mpeg" />
-            </audio>
+            <audio ref={audioRef} src="/happy-day.mp3" loop />
           </div>
 
-          {/* Navigation Links */}
-          <div className="flex space-x-6">
-            <NavLink to="/" className={navLinkClasses}>
-              Home
-            </NavLink>
-            <NavLink to="/hero" className={navLinkClasses}>
-              Hero
-            </NavLink>
-            <NavLink to="/family" className={navLinkClasses}>
-              Family
-            </NavLink>
-            <NavLink to="/emulator" className={navLinkClasses}>
-              Emulator
-            </NavLink>
-            <NavLink to="/tutorial" className={navLinkClasses}>
-              Tutorial
-            </NavLink>
-            <NavLink to="/game" className={navLinkClasses}>
-              Game   {/* ✅ NEW TAB */}
-            </NavLink>
-          </div>
+          {/* Navigation Tabs */}
+          <ul className="flex space-x-8 text-lg font-bold">
+            <li><NavLink to="/" className={navLinkClasses}>HOME</NavLink></li>
+            <li><NavLink to="/hero" className={navLinkClasses}>HERO</NavLink></li>
+            <li><NavLink to="/family" className={navLinkClasses}>FAMILY</NavLink></li>
+            <li><NavLink to="/emulator" className={navLinkClasses}>CHICKEN EMULATOR</NavLink></li>
+            <li><NavLink to="/game" className={navLinkClasses}>GAME</NavLink></li> {/* ✅ NEW */}
+            <li><NavLink to="/kanban" className={navLinkClasses}>KANBAN</NavLink></li> {/* ✅ NEW */}
+            <li><NavLink to="/tutorial" className={navLinkClasses}>TUTORIAL</NavLink></li>
+          </ul>
         </nav>
 
-        <main className="flex-1 p-6">
+        <div className="flex-1">
           <Routes>
             <Route path="/" element={<MedievalChickens />} />
             <Route path="/hero" element={<Hero />} />
             <Route path="/family" element={<Family />} />
             <Route path="/emulator" element={<Emulator />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/kanban" element={<KanBan />} />   {/* ✅ NEW */}
             <Route path="/tutorial" element={<Tutorial />} />
-            <Route path="/game" element={<Game />} />  {/* ✅ NEW ROUTE */}
           </Routes>
-        </main>
+        </div>
+
+        <footer className="bg-gray-800 py-6 text-center text-gray-400">
+          <p>© 2025 The Reed-Dock Chicken Family. All Rights Reserved.</p>
+        </footer>
       </div>
     </Router>
   );

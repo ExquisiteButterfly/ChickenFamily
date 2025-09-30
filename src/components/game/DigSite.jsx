@@ -11,11 +11,11 @@ export default function DigSite({
   earnedAchievements,
   setEarnedAchievements,
 }) {
-  const [grid, setGrid] = useState(Array(25).fill(false)); // 5x5 dig grid
+  const [grid, setGrid] = useState(Array(25).fill(false));
   const [currentArtifact, setCurrentArtifact] = useState(null);
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizAnswered, setQuizAnswered] = useState(false);
-  const [lastAnswer, setLastAnswer] = useState(null); // ✅ track last choice
+  const [lastAnswer, setLastAnswer] = useState(null);
   const [siteComplete, setSiteComplete] = useState(null);
   const clickCountRef = useRef(0);
 
@@ -24,8 +24,8 @@ export default function DigSite({
   const playDiscovery = useSound("/game-audio/discovery.wav");
   const playBadge = useSound("/game-audio/badge.wav");
   const playAchievement = useSound("/game-audio/achievement.wav");
-  const playCorrect = useSound("/game-audio/correct.wav"); // ✅ new
-  const playWrong = useSound("/game-audio/wrong.wav");     // ✅ new
+  const playCorrect = useSound("/game-audio/correct.wav");
+  const playWrong = useSound("/game-audio/wrong.wav");
 
   // Reset listener
   useEffect(() => {
@@ -47,13 +47,12 @@ export default function DigSite({
     clickCountRef.current += 1;
 
     setGrid((g) => {
-      if (g[idx]) return g; // already dug
+      if (g[idx]) return g;
       const ng = [...g];
       ng[idx] = true;
       return ng;
     });
 
-    // Chance to reveal an artifact
     if (Math.random() < 0.18 && currentSite) {
       const siteArtifacts = artifacts[currentSite] || [];
       const revealed = revealedArtifacts[currentSite] || [];
@@ -65,7 +64,6 @@ export default function DigSite({
         setLastAnswer(null);
         playDiscovery();
 
-        // Quick Digger achievement: artifact within first 3 digs
         if (clickCountRef.current <= 3 && !earnedAchievements.includes("Quick Digger")) {
           setEarnedAchievements([...earnedAchievements, "Quick Digger"]);
           playAchievement();
@@ -84,10 +82,9 @@ export default function DigSite({
       playCorrect();
     } else {
       playWrong();
-      return; // ❌ wrong answers don’t progress, keep quiz open
+      return;
     }
 
-    // ✅ Only if correct → record artifact
     const site = currentSite;
     if (!site) return;
     const prev = revealedArtifacts[site] || [];
@@ -95,13 +92,11 @@ export default function DigSite({
       const updated = { ...revealedArtifacts, [site]: [...prev, currentArtifact.id] };
       setRevealedArtifacts(updated);
 
-      // Persist global progress
       try {
         const flat = Object.values(updated).flat();
         localStorage.setItem("cf_game_revealed", JSON.stringify(flat));
       } catch {}
 
-      // Site badge when all artifacts found
       const total = artifacts[site]?.length || 0;
       if (updated[site].length === total && total > 0) {
         const badgeName = `${site} Explorer`;
@@ -112,7 +107,6 @@ export default function DigSite({
         setSiteComplete(site);
       }
 
-      // Completionist: all artifacts in all sites
       const allTotal = Object.values(artifacts).reduce((s, arr) => s + arr.length, 0);
       const allFound = Object.values(updated).reduce((s, arr) => s + arr.length, 0);
       if (allFound === allTotal && allTotal > 0 && !earnedAchievements.includes("Completionist")) {
@@ -169,7 +163,6 @@ export default function DigSite({
             </div>
           )}
 
-          {/* ✅ Feedback section */}
           {quizAnswered && lastAnswer && (
             <>
               {lastAnswer === currentArtifact.quiz?.answer ? (
@@ -177,9 +170,7 @@ export default function DigSite({
                   ✅ Nice digging! Check the Museum to see your collection.
                 </p>
               ) : (
-                <p className="text-red-600 mt-2">
-                  ❌ Try again!
-                </p>
+                <p className="text-red-600 mt-2">❌ Try again!</p>
               )}
             </>
           )}
